@@ -5,15 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.arkteya.vkneewsclient.domain.FeedPost
 import com.arkteya.vkneewsclient.domain.StatisticItem
-import java.util.Collections.replaceAll
+import com.arkteya.vkneewsclient.domain.StatisticType
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 
-    private  val _feedPost = MutableLiveData(FeedPost())
-    val feedPost: LiveData<FeedPost> = _feedPost
+    private val sourceList = mutableListOf<FeedPost>().apply {
+        repeat(10) {
+           add(FeedPost(id = it))
+        }
+    }
 
-    fun updateCount(item: StatisticItem){
-        val oldStatistics = feedPost.value?.statistics ?: throw IllegalStateException("statistic item")         //получаем объект статистики
+
+    private val _feedPosts = MutableLiveData<List<FeedPost>>(sourceList)
+    val feedPosts: LiveData<List<FeedPost>> = _feedPosts
+
+    fun updateCount(feedPost: FeedPost, item: StatisticItem) {
+        val oldPosts =
+            feedPosts.value?.toMutableList() ?: mutableListOf()      //получаем копию объета Пост
+        val oldStatistics =
+            feedPost.statistics                                                //получаем статистику поста
+                ?: throw IllegalStateException("statistic item")         //получаем объект статистики
         val newStatistics = oldStatistics.toMutableList().apply { //делает его изменяемым
             replaceAll { oldItem ->                                      //применяем метод
                 if (oldItem.type == item.type) {                    // если тип клика совпадает с элементом объекта
@@ -23,7 +34,24 @@ class MainViewModel: ViewModel() {
                 }
             }
         }
-        _feedPost.value =
-            feedPost.value?.copy(statistics = newStatistics)         //теперь меняет весь объект с обновленными данными
+        val newFeedPost =
+            feedPost.copy(statistics = newStatistics)    //обновляем пост с новой статистикой
+        _feedPosts.value =
+            oldPosts.apply {
+                replaceAll {                                //замена старого объекта новым replaceAll - меняет данные, но ничего не возвращает,
+                    // apply - вернет коллекцию и т.о. присваивается в   _feedPosts.value
+                    if (it.id == newFeedPost.id) {
+                        newFeedPost
+                    } else {
+                        it
+                    }
+                }
+            }
     }
+fun delete (feedPost: FeedPost){
+    val oldPosts = feedPosts.value?.toMutableList() ?: mutableListOf()
+    oldPosts.remove(feedPost)
+    _feedPosts.value = oldPosts
+}
+
 }
