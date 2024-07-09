@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.arkteya.vkneewsclient.domain.FeedPost
 import com.arkteya.vkneewsclient.domain.StatisticItem
 import com.arkteya.vkneewsclient.domain.StatisticType
+import com.arkteya.vkneewsclient.ui.theme.NavigationItem
 
 class MainViewModel : ViewModel() {
 
@@ -15,9 +16,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-
     private val _feedPosts = MutableLiveData<List<FeedPost>>(sourceList)
     val feedPosts: LiveData<List<FeedPost>> = _feedPosts
+
 
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
         val oldPosts =
