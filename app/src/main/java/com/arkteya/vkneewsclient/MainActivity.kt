@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arkteya.vkneewsclient.domain.FeedPost
 import com.arkteya.vkneewsclient.ui.theme.MainScreen
 import com.arkteya.vkneewsclient.ui.theme.VKNeewsClientTheme
 
@@ -44,13 +43,13 @@ private fun Test(viewModel: MainViewModel) {
                 .background(MaterialTheme.colorScheme.background)
                 .padding(8.dp)
         ) {
-            val models = viewModel.feedPosts.observeAsState()
+            val models = viewModel.screenState.observeAsState()
             LazyColumn {
                 items(20) {
                         models.value
                 }
             }
-            MainScreen(viewModel, model = FeedPost())
+            MainScreen(viewModel)
         }
     }
 }
