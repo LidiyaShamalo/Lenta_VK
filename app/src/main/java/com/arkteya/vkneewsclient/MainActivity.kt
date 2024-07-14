@@ -22,36 +22,16 @@ import com.arkteya.vkneewsclient.ui.theme.VKNeewsClientTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<MainViewModel>() //получение
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Test(viewModel = viewModel)
+            VKNeewsClientTheme {
+                MainScreen()
+            }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
-@Composable
-private fun Test(viewModel: MainViewModel) {
-    VKNeewsClientTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(8.dp)
-        ) {
-            val models = viewModel.screenState.observeAsState()
-            LazyColumn {
-                items(20) {
-                        models.value
-                }
-            }
-            MainScreen(viewModel)
-        }
-    }
-}
 
 

@@ -14,54 +14,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.arkteya.vkneewsclient.MainViewModel
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.arkteya.vkneewsclient.NewsFeedViewModel
 import com.arkteya.vkneewsclient.domain.FeedPost
 import androidx.compose.material.SwipeToDismiss as SwipeToDismiss1
 
 
 @Composable
 fun HomeScreen(
-    viewModel: MainViewModel,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onCommentClickListener: (FeedPost) -> Unit
 ) {
 
-    val screenState =
-        viewModel.screenState.observeAsState(HomeScreenState.Initial)           //подписываемся на стейт
+    val viewModel: NewsFeedViewModel = viewModel()
+    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)           //подписываемся на стейт
 
     when (val currentState =
         screenState.value) {              //если этот стейт является списком постов, то вызывается функциия FeedPosts
-        is HomeScreenState.Posts -> {
+        is NewsFeedScreenState.Posts -> {
             FeedPosts(
                 viewModel = viewModel,
                 paddingValues = paddingValues,
-                posts = currentState.posts
+                posts = currentState.posts,
+                onCommentClickListener = onCommentClickListener
             )
         }
-
-        is HomeScreenState.Comments -> {                                 //если этот стейт является типом Comments - отобразаем список комментариев
-            CommentsScreen(
-                feedPost = currentState.feedPost,
-                comments = currentState.comments,
-                onBackPressed = {
-                    viewModel.closeComments()
-                })
-            BackHandler {
-                viewModel.closeComments()
-            }
-        }
-
-        HomeScreenState.Initial -> {}          //обработка всех значаний - в данном случае ничего не будет происходить
+        NewsFeedScreenState.Initial -> {}          //обработка всех значаний - в данном случае ничего не будет происходить
     }
-
-
 }
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 private fun FeedPosts(
-    viewModel: MainViewModel,
+    viewModel: NewsFeedViewModel,
     paddingValues: PaddingValues,
-    posts: List<FeedPost>
+    posts: List<FeedPost>,
+    onCommentClickListener: (FeedPost) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues),
@@ -99,7 +88,7 @@ private fun FeedPosts(
                             viewModel.updateCount(feedPost, statisticItem)
                         },
                         onCommentClickListener = {
-                            viewModel.showComments(feedPost)
+                           onCommentClickListener(feedPost)
                         }
                     )
                 }

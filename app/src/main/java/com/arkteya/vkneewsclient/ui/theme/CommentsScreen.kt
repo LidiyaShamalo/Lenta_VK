@@ -22,53 +22,62 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.arkteya.vkneewsclient.CommentsViewModel
+import com.arkteya.vkneewsclient.CommentsViewModelFactory
 import com.arkteya.vkneewsclient.domain.FeedPost
 import com.arkteya.vkneewsclient.domain.PostComment
 
 @Composable
 fun CommentsScreen(
-    feedPost: FeedPost,
-    comments: List<PostComment>,
-    onBackPressed: () -> Unit
-
+    onBackPressed: () -> Unit,
+    feedPost: FeedPost
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(title = {
-                Text(text = "Comments for FeedPost Id: ${feedPost.id}")
-            },
-                navigationIcon = {
-                    IconButton(onClick = { onBackPressed() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = null
+    val viewModel: CommentsViewModel = viewModel(
+        factory = CommentsViewModelFactory(feedPost)
+    )
+    val screenState = viewModel.screenState.observeAsState(CommentsScreenState.Initial)
+    val currentState = screenState.value
 
-                        )
+    if (currentState is CommentsScreenState.Comments) {
+        Scaffold(
+            topBar = {
+                TopAppBar(title = {
+                    Text(text = "Comments for FeedPost Id: ${currentState.feedPost.id}")
+                },
+                    navigationIcon = {
+                        IconButton(onClick = { onBackPressed() }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = null
+
+                            )
+                        }
                     }
+                )
+            }
+        ) { paddingValues ->
+            LazyColumn(                                           //для отображения списка постов
+                modifier = Modifier.padding(paddingValues),
+                contentPadding = PaddingValues(
+                    top = 16.dp,
+                    start = 8.dp,
+                    end = 8.dp,
+                    bottom = 72.dp
+                )
+            ) {
+                items(
+                    items = currentState.comments,
+                    key = { it.id }
+                ) { comment ->
+                    CommentItem(comment = comment)
                 }
-            )
-        }
-    ) { paddingValues ->
-        LazyColumn(                                           //для отображения списка постов
-            modifier = Modifier.padding(paddingValues),
-            contentPadding = PaddingValues(
-                top = 16.dp,
-                start = 8.dp,
-                end = 8.dp,
-                bottom = 72.dp
-            )
-        ) {
-            items(
-                items = comments,
-                key = { it.id }
-            ) {comment ->
-                CommentItem(comment = comment)
-
             }
         }
     }
@@ -77,7 +86,7 @@ fun CommentsScreen(
 @Composable
 private fun CommentItem(
     comment: PostComment
-){
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,7 +94,7 @@ private fun CommentItem(
                 horizontal = 16.dp,
                 vertical = 4.dp
             )
-    ){
+    ) {
         Image(
             modifier = Modifier.size(24.dp),
             painter = painterResource(id = comment.authorAvatarId),
@@ -99,12 +108,14 @@ private fun CommentItem(
                 fontSize = 12.sp
             )
             Spacer(modifier = Modifier.height(4.dp))                           //отступ
-            Text(text = comment.commentText,                                   //вывод текста комментария
+            Text(
+                text = comment.commentText,                                   //вывод текста комментария
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(4.dp))                           //отступ
-            Text(text = comment.publicationDate,                               //вывод даты комментария
+            Text(
+                text = comment.publicationDate,                               //вывод даты комментария
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 12.sp
             )
@@ -116,7 +127,7 @@ private fun CommentItem(
 @Composable
 private fun PreviewComment() {
     VKNeewsClientTheme {
-        CommentItem(comment = PostComment(id =0))
+        CommentItem(comment = PostComment(id = 0))
     }
 
 }
