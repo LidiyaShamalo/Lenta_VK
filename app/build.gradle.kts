@@ -18,6 +18,23 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+
+
+        }
+    }
+
+    // Добавление значений в Manifest Placeholders.
+    android {
+
+        defaultConfig {
+            addManifestPlaceholders(
+                mapOf(
+                    "VKIDClientID" to "52011723", // ID вашего приложения (app_id).
+                    "VKIDClientSecret" to "1SoDTnPBROSPcZCaU7SG", // Ваш защищенный ключ (client_secret).
+                    "VKIDRedirectHost" to "vk.com", // Обычно используется vk.com.
+                    "VKIDRedirectScheme" to "vk52011723", // Обычно используется vk{ID приложения}.
+                )
+            )
         }
     }
 
@@ -50,6 +67,8 @@ android {
     }
 }
 
+
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -60,6 +79,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,7 +90,12 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10")
 
-    implementation ("androidx.compose.material:material:1.4.2")
+    implementation("io.coil-kt:coil-compose:2.1.0")
+
+    implementation("com.vk:android-sdk-core:4.1.0")
+    implementation("com.vk:android-sdk-api:4.1.0")
+
+    implementation("androidx.compose.material:material:1.4.2")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
     implementation("androidx.navigation:navigation-compose:2.7.7")       //навигация по экранам с сохранением состояния действий экрана и эранов в целом
 }
