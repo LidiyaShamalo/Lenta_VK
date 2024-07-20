@@ -1,4 +1,4 @@
-package com.arkteya.vkneewsclient.ui.theme
+package com.arkteya.vkneewsclient.presentation.news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

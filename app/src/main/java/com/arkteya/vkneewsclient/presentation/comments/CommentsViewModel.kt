@@ -1,11 +1,10 @@
-package com.arkteya.vkneewsclient
+package com.arkteya.vkneewsclient.presentation.comments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.arkteya.vkneewsclient.domain.FeedPost
 import com.arkteya.vkneewsclient.domain.PostComment
-import com.arkteya.vkneewsclient.ui.theme.CommentsScreenState
 
 
 class CommentsViewModel(

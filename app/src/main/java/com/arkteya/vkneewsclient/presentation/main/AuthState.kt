@@ -1,4 +1,4 @@
-package com.arkteya.vkneewsclient.ui.theme
+package com.arkteya.vkneewsclient.presentation.main
 
 
 sealed class AuthState {

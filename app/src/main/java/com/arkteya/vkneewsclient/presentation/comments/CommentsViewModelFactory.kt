@@ -1,4 +1,4 @@
-package com.arkteya.vkneewsclient
+package com.arkteya.vkneewsclient.presentation.comments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

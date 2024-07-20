@@ -1,11 +1,10 @@
-package com.arkteya.vkneewsclient
+package com.arkteya.vkneewsclient.presentation.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.arkteya.vkneewsclient.domain.FeedPost
 import com.arkteya.vkneewsclient.domain.StatisticItem
-import com.arkteya.vkneewsclient.ui.theme.NewsFeedScreenState
 
 class NewsFeedViewModel : ViewModel() {
 

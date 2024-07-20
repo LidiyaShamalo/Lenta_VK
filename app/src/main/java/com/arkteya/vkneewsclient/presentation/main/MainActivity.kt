@@ -1,20 +1,14 @@
-package com.arkteya.vkneewsclient
+package com.arkteya.vkneewsclient.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.arkteya.vkneewsclient.ui.theme.AuthState
-import com.arkteya.vkneewsclient.ui.theme.LoginScreen
-import com.arkteya.vkneewsclient.ui.theme.MainScreen
 import com.arkteya.vkneewsclient.ui.theme.VKNeewsClientTheme
 import com.vk.api.sdk.VK
-import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
 
 class MainActivity : ComponentActivity() {

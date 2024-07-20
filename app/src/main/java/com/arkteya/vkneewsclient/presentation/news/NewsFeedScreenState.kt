@@ -1,7 +1,6 @@
-package com.arkteya.vkneewsclient.ui.theme
+package com.arkteya.vkneewsclient.presentation.news
 
 import com.arkteya.vkneewsclient.domain.FeedPost
-import com.arkteya.vkneewsclient.domain.PostComment
 
 sealed class NewsFeedScreenState {                               //состояние экрана
 

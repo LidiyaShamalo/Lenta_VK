@@ -1,4 +1,4 @@
-package com.arkteya.vkneewsclient.ui.theme
+package com.arkteya.vkneewsclient.presentation.comments
 
 import com.arkteya.vkneewsclient.domain.FeedPost
 import com.arkteya.vkneewsclient.domain.PostComment
